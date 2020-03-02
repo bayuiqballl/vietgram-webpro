@@ -1,6 +1,6 @@
 <?php
 // koneksi database
-$koneksi = mysqli_connect("localhost", "root", "", "vietgram");
+require_once 'db.php';
 
 // menampilkan isi query
 function query($query)
@@ -19,69 +19,32 @@ function tambahPhoto($data)
 {
     global $koneksi;
     $caption = htmlspecialchars($data['caption']);
-    // $like = $data['like'];
-    //upload gambar 
-    $gambar = upload();
-    if (!$gambar) {
-        return false;
+    $ekstensi_allowed = array('png', 'jpg', 'jpeg', 'svg');
+    $gambar = $_FILES['gambar']['name'];
+    $x = explode('.', $gambar);
+    $ekstensi = strtolower(end($x));
+    $ukuran = $_FILES['gambar']['size'];
+    $file_tmp = $_FILES['gambar']['tmp_name'];
+
+
+    if (in_array($ekstensi, $ekstensi_allowed) === true) {
+        if ($ukuran < 1044070) {
+            move_uploaded_file($file_tmp, 'img/' . $gambar);
+            $query = "INSERT INTO photo VALUES('','$gambar','$caption')";
+            mysqli_query($koneksi, $query);
+        } else {
+            echo '<script>File is Very Big</script>';
+        }
+    } else {
+        echo '<script>Your Format be Denied!</script>';
     }
-
-    $query = "INSERT INTO photo VALUES ('','$gambar','$caption')";
-    mysqli_query($koneksi, $query);
-
-    return mysqli_affected_rows($koneksi);
 }
 
-function upload()
-{
-
-    $namaFile = $_FILES['gambar']['name'];
-    $ukuranFile = $_FILES['gambar']['size'];
-    $error = $_FILES['gambar']['error'];
-    $tmpName = $_FILES['gambar']['tmp_name'];
-
-    // cek apakah tidak ada gambar yang di upload  
-    if ($error === 4) {
-        echo "<script>
-		 	alert('Pilih Gambar terlebih dahulu!');
-		</script>";
-        return false;
-    }
-
-    // cek apakah yang diupload adalah gambar
-    $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
-    $ekstensiGambar = explode('.', $namaFile);
-    $ekstensiGambar = strtolower(end($ekstensiGambar));
-    if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
-        echo "<script>
-    	 	alert('yang di upload bukan gambar');
-    	</script>";
-        return false;
-    }
-
-    // cek jika ukurannya terlalu besar
-    if ($ukuranFile > 1000000) {
-        echo "<script>
-		 	alert('ukuran anda terlalu besar');
-		</script>";
-        return false;
-    }
-
-    // lolos pengecekan, gambar siap diupload
-    // generate nama gambar baru
-    $namaFileBaru = uniqid();
-    $namaFileBaru .= '.';
-    $namaFileBaru .= $ekstensiGambar;
-
-    move_uploaded_file($tmpName, 'img/' . $namaFileBaru);
-    echo var_dump($gambar);
-    return $namaFileBaru;
-}
 
 function hapusPhoto($id)
 {
     global $koneksi;
-    mysqli_query($koneksi, "DELETE FROM mahasiswa WHERE id = $id");
+    mysqli_query($koneksi, "DELETE FROM photo WHERE id = $id");
     return mysqli_affected_rows($koneksi);
 }
 // ==================================================

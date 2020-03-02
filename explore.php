@@ -1,24 +1,6 @@
 <?php
 require_once 'function/functions.php';
-
-if (isset($_POST["submit"])) {
-    if (tambahPhoto($_POST) > 0) {
-        // echo "<script>
-        //     alert('Succes!');
-        //     document.location.href = 'explore.php';
-        // </script>";
-    } else {
-        echo "<script>
-            alert('Failed!');
-            document.location.href = 'explore.php';
-        </script>";
-    }
-}
-
-
-
 $photo = query("SELECT * FROM photo");
-
 ?>
 
 
@@ -71,44 +53,29 @@ $photo = query("SELECT * FROM photo");
     <!-- tambah Data -->
     <div class="container mt-3">
         <div class="col-lg-6">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Upload</button>
-        </div>
-
-        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <form action="" method="post">
-                        <div class="form-group">
-                            <label for="gambar">Upload Your Images</label>
-                            <input type="file" class="form-control-file" name="gambar" id="gambar">
-                        </div>
-                        <div class="form-group">
-                            <label for="caption">Insert Caption</label>
-                            <textarea class="form-control" name="caption" id="caption" rows="3"></textarea>
-                        </div>
-                        <button type="submit" name="submit" class="btn btn-primary">Upload</button>
-                    </form>
-                </div>
-            </div>
+            <a href="add.php" class="btn btn-primary">Upload</a>
         </div>
     </div>
+    <br><br><br><br>
 
 
     <main id="explore">
-        <ul class="explore__users">
-            <li class="explore__user">
-                <div class="explore__user-column">
-                    <img src="images/avatar.jpg" class="explore__avatar" />
-                    <div class="explore__info">
-                        <span class="explore__username">inthetiger</span>
-                        <span class="explore__full-name">Lynn Park</span>
+        <?php foreach ($photo as $row) : ?>
+            <ul class="explore__users">
+                <li class="explore__user">
+                    <div class="explore__user-column">
+                        <img src="img/<?= $row['gambar']; ?>" class="explore__avatar" />
+                        <div class="explore__info">
+                            <span class="explore__full-name"><?= $row['caption']; ?></span>
+                        </div>
                     </div>
-                </div>
-                <div class="explore__user-column">
-                    <button class="">Follow</button>
-                </div>
-            </li>
-        </ul>
+                    <div class="explore__user-column">
+                        <a class="btn btn-danger" href="delete.php?id=<?= $row["id"]; ?>">Delete</a>
+                    </div>
+                </li>
+            </ul>
+
+        <?php endforeach; ?>
     </main>
     <footer class="footer">
         <div class="footer__column">
