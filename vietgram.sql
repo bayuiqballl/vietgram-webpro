@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2020 at 05:18 AM
+-- Generation Time: Mar 02, 2020 at 07:57 PM
 -- Server version: 10.1.40-MariaDB
 -- PHP Version: 7.3.5
 
@@ -39,8 +39,7 @@ CREATE TABLE `photo` (
 --
 
 INSERT INTO `photo` (`id`, `gambar`, `caption`) VALUES
-(1, '5e58fbd5c9a9f.png', 'aaa'),
-(20, '5e5918f655745.', '');
+(10, 'Icons_CTF-690x500.png', 'BENDERA');
 
 -- --------------------------------------------------------
 
@@ -101,7 +100,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `photo`
 --
 ALTER TABLE `photo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `profile`
