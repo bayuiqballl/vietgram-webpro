@@ -1,4 +1,5 @@
 <?php
+
 // koneksi database
 require_once 'db.php';
 
@@ -47,4 +48,28 @@ function hapusPhoto($id)
     mysqli_query($koneksi, "DELETE FROM photo WHERE id = $id");
     return mysqli_affected_rows($koneksi);
 }
-// ==================================================
+// ======================== Edit Profile  ==========================
+
+function EditProfile($data)
+{
+    global $koneksi;
+    $id = $data["id"];
+    $name = $data["nama"];
+    $username = $data["username"];
+    $website = $data["website"];
+    $bio = $data["bio"];
+    $email = $data["email"];
+    $number_phone = $data["number_phone"];
+    $gender = $data["gender"];
+
+    $query = "UPDATE profil SET nama = '$name', username = '$username'  , website = '$website', bio = '$bio', email = '$email',number_phone = '$number_phone', gender = '$gender'  WHERE id = $id  ";
+    mysqli_query($koneksi, $query);
+    return mysqli_affected_rows($koneksi);
+}
+
+// ========== searching Caption
+function cariCaption($cari)
+{
+    $query = "SELECT * FROM photo WHERE caption LIKE '%$cari%' ";
+    return query($query);
+}

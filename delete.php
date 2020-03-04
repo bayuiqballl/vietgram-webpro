@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'function/functions.php';
 
 $id = $_GET['id'];

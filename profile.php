@@ -1,3 +1,14 @@
+<?php
+session_start();
+require_once 'function/functions.php';
+$photo = query('SELECT * FROM photo ');
+// var_dump($photo);
+
+
+$profile = query("SELECT * FROM profil");
+// var_dump($profile);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +40,7 @@
                     </a>
                 </li>
                 <li class="navigation__list-item">
-                    <a href="#" class="navigation__link">
+                    <a href="logout.php" class="navigation__link">
                         <i class="fa fa-heart-o fa-lg"></i>
                     </a>
                 </li>
@@ -48,13 +59,13 @@
             </div>
             <div class="profile__column">
                 <div class="profile__title">
-                    <h3 class="profile__username">serranoarevalo</h3>
-                    <a href="edit-profile.php">Edit profile</a>
+                    <h3 class="profile__username"><?= $profile[0]['username']; ?></h3>
+                    <a href="edit-profile.php?id=<?= $profile[0]['id']; ?>">Edit profile</a>
                     <i class="fa fa-cog fa-lg"></i>
                 </div>
                 <ul class="profile__stats">
                     <li class="profile__stat">
-                        <span class="stat__number">333</span> posts
+                        <span class="stat__number"><?= count($photo); ?></span> posts
                     </li>
                     <li class="profile__stat">
                         <span class="stat__number">1234</span> followers
@@ -65,67 +76,29 @@
                 </ul>
                 <p class="profile__bio">
                     <span class="profile__full-name">
-                        Nicolás Serrano Arévalo
-                    </span> Doing whatever and eating Pho Lorem ipsum dolor sit amet consectetur, adipisicing
-                    elit. Ducimus suscipit praesentium eveniet quibusdam ipsam omnis fugit. Tempore voluptates ratione recusandae
-                    natus illo perspiciatis suscipit, odio consequuntur quasi obcaecati minus! Omnis.
-                    <a href="#">serranoarevalo.com</a>
+                        <?= $profile[0]['nama']; ?>
+                    </span>
+                    <?= $profile[0]['bio']; ?>
+                    <a href="<?= $profile[0]['website']; ?>"><?= $profile[0]['website']; ?></a>
                 </p>
             </div>
         </header>
         <section class="profile__photos">
-            <div class="profile__photo">
-                <img src="images/feedPhoto.jpg" />
-                <div class="profile__photo-overlay">
-                    <span class="overlay__item">
-                        <i class="fa fa-heart"></i>
-                        486
-                    </span>
-                    <span class="overlay__item">
-                        <i class="fa fa-comment"></i>
-                        344
-                    </span>
+            <?php foreach ($photo as $row) : ?>
+                <div class="profile__photo">
+                    <img src="img/<?= $row['gambar']; ?>" width="285px" height="210px" />
+                    <div class="profile__photo-overlay">
+                        <span class="overlay__item">
+                            <i class="fa fa-heart"></i>
+                            486
+                        </span>
+                        <span class="overlay__item">
+                            <i class="fa fa-comment"></i>
+                            344
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div class="profile__photo">
-                <img src="images/feedPhoto.jpg" />
-                <div class="profile__photo-overlay">
-                    <span class="overlay__item">
-                        <i class="fa fa-heart"></i>
-                        486
-                    </span>
-                    <span class="overlay__item">
-                        <i class="fa fa-comment"></i>
-                        344
-                    </span>
-                </div>
-            </div>
-            <div class="profile__photo">
-                <img src="images/feedPhoto.jpg" />
-                <div class="profile__photo-overlay">
-                    <span class="overlay__item">
-                        <i class="fa fa-heart"></i>
-                        486
-                    </span>
-                    <span class="overlay__item">
-                        <i class="fa fa-comment"></i>
-                        344
-                    </span>
-                </div>
-            </div>
-            <div class="profile__photo">
-                <img src="images/feedPhoto.jpg" />
-                <div class="profile__photo-overlay">
-                    <span class="overlay__item">
-                        <i class="fa fa-heart"></i>
-                        486
-                    </span>
-                    <span class="overlay__item">
-                        <i class="fa fa-comment"></i>
-                        344
-                    </span>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </section>
     </main>
     <footer class="footer">
@@ -146,7 +119,7 @@
             </nav>
         </div>
         <div class="footer__column">
-            <span class="footer__copyright">© 2017 Vietgram</span>
+            <span class="footer__copyright">© 2017 Vietgram feat Bayuiqball</span>
         </div>
     </footer>
 </body>

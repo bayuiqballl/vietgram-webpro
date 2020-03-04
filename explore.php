@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'function/functions.php';
 $photo = query("SELECT * FROM photo");
 ?>
@@ -36,7 +37,7 @@ $photo = query("SELECT * FROM photo");
                     </a>
                 </li>
                 <li class="navigation__list-item">
-                    <a href="#" class="navigation__link">
+                    <a href="logout.php" class="navigation__link">
                         <i class="fa fa-heart-o fa-lg"></i>
                     </a>
                 </li>
@@ -95,7 +96,7 @@ $photo = query("SELECT * FROM photo");
             </nav>
         </div>
         <div class="footer__column">
-            <span class="footer__copyright">© 2017 Vietgram</span>
+            <span class="footer__copyright">© 2017 Vietgram feat Bayuiqball</span>
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

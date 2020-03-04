@@ -1,3 +1,25 @@
+<?php
+session_start();
+require_once 'function/functions.php';
+$id = $_GET["id"];
+// var_dump($id);
+
+$profile = query("SELECT * FROM  profil WHERE id = $id ")[0];
+// var_dump($profile);
+$gender = array('Male', 'Female', 'Can t remember');
+// var_dump($profile);
+
+if (isset($_POST["submit"])) {
+    if (EditProfile($_POST) > 0) {
+        header("Location: profile.php");
+    } else {
+        header("Location: edit-profile.php");
+    }
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +51,7 @@
                     </a>
                 </li>
                 <li class="navigation__list-item">
-                    <a href="#" class="navigation__link">
+                    <a href="logout.php" class="navigation__link">
                         <i class="fa fa-heart-o fa-lg"></i>
                     </a>
                 </li>
@@ -47,42 +69,47 @@
                 <div class="edit-profile__avatar-container">
                     <img src="images/avatar.jpg" class="edit-profile__avatar" />
                 </div>
-                <h4 class="edit-profile__username">serranoarevalo</h4>
+                <h4 class="edit-profile__username"><?= $profile["username"]; ?></h4>
             </header>
-            <form action="" class="edit-profile__form">
+            <form action="" class="edit-profile__form" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<?= $profile['id']; ?>">
                 <div class="form__row">
-                    <label for="full-name" class="form__label">Name:</label>
-                    <input id="full-name" type="text" class="form__input" />
+                    <label for="nama" class="form__label">Name:</label>
+                    <input id="nama" name="nama" type="text" value="<?= $profile['nama']; ?>" class=" form__input" />
                 </div>
                 <div class="form__row">
-                    <label for="user-name" class="form__label">Username:</label>
-                    <input id="user-name" type="text" class="form__input" />
+                    <label for="username" class="form__label">Username:</label>
+                    <input id="username" name="username" type="text" value="<?= $profile['username']; ?>" class="form__input" />
                 </div>
                 <div class="form__row">
                     <label for="website" class="form__label">Website:</label>
-                    <input id="website" type="url" class="form__input" />
+                    <input id="website" name="website" type="url" value="<?= $profile['website']; ?>" class=" form__input" />
                 </div>
                 <div class="form__row">
                     <label for="bio" class="form__label">Bio:</label>
-                    <textarea id="bio"></textarea>
+                    <textarea name="bio" id="bio"><?= $profile['bio']; ?></textarea>
                 </div>
                 <div class="form__row">
                     <label for="email" class="form__label">Email:</label>
-                    <input id="email" type="email" class="form__input" />
+                    <input id="email" name="email" type="email" value="<?= $profile['email']; ?>" class=" form__input" />
                 </div>
                 <div class="form__row">
-                    <label for="phone" class="form__label">Phone Number:</label>
-                    <input id="phone" type="tel" class="form__input" />
+                    <label for="number_phone" class="form__label">Phone Number:</label>
+                    <input id="phone" value="<?= $profile['number_phone']; ?>" name=" number_phone" type="number" class="form__input" />
                 </div>
                 <div class="form__row">
-                    <label for="gender" class="form__label">Gender:</label>
-                    <select id="gender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="cant">Can't remember</option>
+                    <label for="gender" class="form__label" name="gender">Gender:</label>
+                    <select name="gender">
+                        <?php
+                        foreach ($gender as $kelamin) {
+                            echo "<option value='$kelamin' ";
+                            echo $profile['gender'] == $kelamin ? 'selected="selected"' : '';
+                            echo ">$kelamin</option>";
+                        }
+                        ?>
                     </select>
                 </div>
-                <input type="submit" value="Submit">
+                <input type="submit" name="submit" value="Submit">
             </form>
         </div>
     </main>
@@ -104,7 +131,7 @@
             </nav>
         </div>
         <div class="footer__column">
-            <span class="footer__copyright">© 2017 Vietgram</span>
+            <span class="footer__copyright">© 2017 Vietgram feat Bayuiqball</span>
         </div>
     </footer>
 </body>

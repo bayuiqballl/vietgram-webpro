@@ -1,3 +1,18 @@
+<?php
+require_once 'function/user.php';
+
+if (isset($_POST["submit"])) {
+    if (registrasi($_POST) > 0) {
+        echo "<script>alert('Succes!');</script>";
+        header('Location: index.php');
+    } else {
+        echo mysqli_error($koneksi);
+    }
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -19,12 +34,12 @@
         <div class="login__column">
             <div class="login__box">
                 <img src="images/loginLogo.png" class="login__logo" />
-                <form action="feed.html" method="get" class="login__form">
+                <form action="" method="post" enctype="multipart/form-data" class="login__form">
                     <input type="text" name="username" placeholder="Username" required />
                     <input type="password" name="password" placeholder="Password" required />
                     <br>
-                    <input type="password" name="password" placeholder="Password" required />
-                    <input type="submit" value="SIgn Up" />
+                    <input type="email" name="email" placeholder="Email" required />
+                    <input type="submit" name="submit" value="SIgn Up" />
                 </form>
                 <span class="login__divider">or</span>
                 <a href="#" class="login__link">
@@ -63,7 +78,7 @@
             </nav>
         </div>
         <div class="footer__column">
-            <span class="footer__copyright">© 2017 Vietgram</span>
+            <span class="footer__copyright">© 2017 Vietgram feat Bayuiqball</span>
         </div>
     </footer>
 </body>

@@ -1,5 +1,8 @@
 <?php
+session_start();
 require_once 'function/functions.php';
+
+$profile = query("SELECT * FROM profil");
 
 if (isset($_POST["submit"])) {
     if (!tambahPhoto($_POST) > 0) {
@@ -54,7 +57,7 @@ if (isset($_POST["submit"])) {
                     </a>
                 </li>
                 <li class="navigation__list-item">
-                    <a href="#" class="navigation__link">
+                    <a href="logout.php" class="navigation__link">
                         <i class="fa fa-heart-o fa-lg"></i>
                     </a>
 
@@ -79,7 +82,7 @@ if (isset($_POST["submit"])) {
                 <div class="edit-profile__avatar-container">
                     <img src="images/avatar.jpg" class="edit-profile__avatar" />
                 </div>
-                <h4 class="edit-profile__username">serranoarevalo</h4>
+                <h4 class="edit-profile__username"><?= $profile[0]['username']; ?></h4>
             </header>
             <form action="" method="post" enctype="multipart/form-data" class="edit-profile__form">
                 <div class="form__row">
@@ -123,7 +126,7 @@ if (isset($_POST["submit"])) {
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         <div class="footer__column">
-            <span class="footer__copyright">© 2017 Vietgram</span>
+            <span class="footer__copyright">© 2017 Vietgram feat Bayuiqball</span>
         </div>
     </footer>
 </body>

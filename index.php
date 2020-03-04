@@ -1,3 +1,64 @@
+<?php
+session_start();
+require_once 'function/functions.php';
+require_once 'function/user.php';
+
+// cek cookie
+if (isset($_COOKIE['id']) && isset($_COOKIE['key'])) {
+    $id = $_COOKIE['id'];
+    $key = $_COOKIE['key'];
+
+    $result = mysqli_query($koneksi, "SELECT username FROM user WHERE id = $id");
+    $row = mysqli_fetch_assoc($result);
+
+    // enkripsi cookie
+    if ($key === hash('shas256', $row['username'])) {
+        $_SESSION['login'] = true;
+    }
+}
+
+if (isset($_COOKIE['login'])) {
+    if ($_COOKIE['login'] == 'true') {
+        $_SESSION['login'] = true;
+    }
+}
+
+if (isset($_SESSION['login'])) {
+    echo "<script>
+  document.location.href = 'feed.php';
+  </script>";
+    exit;
+}
+
+if (isset($_POST["login"])) {
+    $username = $_POST['username'];
+    $pass = $_POST['password'];
+
+
+    $result = mysqli_query($koneksi, "SELECT * FROM user WHERE username = '$username' ");
+
+
+    if (mysqli_num_rows($result) === 1) {
+
+        $row = mysqli_fetch_assoc($result);
+        if (password_verify($pass, $row["password"])) {
+            // set session
+            $_SESSION["login"] = true;
+            // cek remember 
+            if (isset($_POST['remember'])) {
+                // buat cookie
+                setcookie('id', $row['id'], time() + 60);
+                setcookie('key', hash('sha256', $row['username']), time() + 60);
+            }
+            header("Location: feed.php");
+            exit;
+        }
+    }
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -19,10 +80,10 @@
         <div class="login__column">
             <div class="login__box">
                 <img src="images/loginLogo.png" class="login__logo" />
-                <form action="feed.php" method="get" class="login__form">
+                <form action="" method="post" class="login__form">
                     <input type="text" name="username" placeholder="Username" required />
                     <input type="password" name="password" placeholder="Password" required />
-                    <input type="submit" value="Log in" />
+                    <input type="submit" name="login" value="Log in" />
                 </form>
                 <span class="login__divider">or</span>
                 <a href="#" class="login__link">
@@ -61,7 +122,7 @@
             </nav>
         </div>
         <div class="footer__column">
-            <span class="footer__copyright">© 2017 Vietgram</span>
+            <span class="footer__copyright">© 2017 Vietgram feat Bayuiqball</span>
         </div>
     </footer>
 </body>
